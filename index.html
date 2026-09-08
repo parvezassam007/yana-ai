@@ -25,7 +25,6 @@ body{
   grid-template-columns:260px 1fr 390px;
 }
 
-/* SIDEBAR */
 .sidebar{
   background:#08101f;
   border-right:1px solid #202a43;
@@ -78,7 +77,6 @@ body{
   line-height:1.5;
 }
 
-/* MAIN */
 .main{
   padding:35px;
   display:flex;
@@ -115,7 +113,6 @@ body{
   margin-top:10px;
 }
 
-/* CHAT */
 .chat{
   flex:1;
   overflow-y:auto;
@@ -129,6 +126,7 @@ body{
   border-radius:22px;
   margin:18px 0;
   line-height:1.6;
+  white-space:pre-wrap;
 }
 
 .msg.user{
@@ -143,7 +141,6 @@ body{
   margin-bottom:8px;
 }
 
-/* INPUT */
 .composer{
   display:flex;
   gap:10px;
@@ -174,7 +171,10 @@ body{
   cursor:pointer;
 }
 
-/* RIGHT PANEL */
+.send:disabled{
+  opacity:.5;
+}
+
 .right{
   background:#090f1d;
   border-left:1px solid #202a43;
@@ -218,7 +218,6 @@ body{
   font-size:20px;
 }
 
-/* MOBILE */
 @media(max-width:900px){
 
   .app{
@@ -237,7 +236,6 @@ body{
   .top h1{
     font-size:25px;
   }
-
 }
 </style>
 </head>
@@ -246,7 +244,6 @@ body{
 
 <div class="app">
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
 
   <div class="logo">
@@ -274,8 +271,6 @@ body{
 
 </aside>
 
-
-<!-- MAIN CHAT -->
 <main class="main">
 
   <div class="top">
@@ -296,7 +291,6 @@ body{
     How can I help you today?
   </p>
 
-
   <section class="chat" id="chat">
 
     <div class="msg">
@@ -306,38 +300,19 @@ body{
       </div>
 
       Hey Parbez! 😊
+
       <br><br>
 
       I'm YANA, your AI assistant.
+
       <br>
 
       Ask me anything! 💜
 
     </div>
 
-
-    <div class="msg user">
-      Hi Yana 👋
-    </div>
-
-
-    <div class="msg">
-
-      <div class="name">
-        YANA
-      </div>
-
-      Hello Parbez! 😊
-      <br>
-
-      How can I help you today? 💜
-
-    </div>
-
   </section>
 
-
-  <!-- MESSAGE BOX -->
   <form class="composer" id="form">
 
     <input
@@ -347,7 +322,7 @@ body{
       placeholder="Type your message..."
     >
 
-    <button class="send" type="submit">
+    <button class="send" id="send" type="submit">
       ➤
     </button>
 
@@ -355,8 +330,6 @@ body{
 
 </main>
 
-
-<!-- YANA PHOTO -->
 <aside class="right">
 
   <img
@@ -403,8 +376,10 @@ body{
 
 </div>
 
-
 <script>
+
+const WORKER_URL =
+"https://yana-ai.alomparbez124.workers.dev";
 
 const form =
 document.getElementById("form");
@@ -415,8 +390,50 @@ document.getElementById("input");
 const chat =
 document.getElementById("chat");
 
+const send =
+document.getElementById("send");
 
-form.addEventListener("submit", function(e){
+
+function addMessage(text, isUser){
+
+  const msg =
+  document.createElement("div");
+
+  msg.className =
+  isUser ? "msg user" : "msg";
+
+  if(isUser){
+
+    msg.textContent = text;
+
+  }else{
+
+    msg.innerHTML =
+    '<div class="name">YANA</div>' +
+    escapeHTML(text);
+
+  }
+
+  chat.appendChild(msg);
+
+  chat.scrollTop =
+  chat.scrollHeight;
+}
+
+
+function escapeHTML(text){
+
+  const div =
+  document.createElement("div");
+
+  div.textContent =
+  text;
+
+  return div.innerHTML;
+}
+
+
+form.addEventListener("submit", async function(e){
 
   e.preventDefault();
 
@@ -425,52 +442,62 @@ form.addEventListener("submit", function(e){
 
   if(!text) return;
 
-
-  /* USER MESSAGE */
-
-  const user =
-  document.createElement("div");
-
-  user.className =
-  "msg user";
-
-  user.textContent =
-  text;
-
-  chat.appendChild(user);
+  addMessage(text,true);
 
   input.value = "";
 
-  chat.scrollTop =
-  chat.scrollHeight;
+  send.disabled = true;
+
+  send.textContent = "⏳";
 
 
-  /* YANA REPLY */
+  try{
 
-  setTimeout(function(){
+    const url =
+    WORKER_URL +
+    "/chat?message=" +
+    encodeURIComponent(text);
 
-    const reply =
-    document.createElement("div");
 
-    reply.className =
-    "msg";
+    const response =
+    await fetch(url);
 
-    reply.innerHTML = `
-      <div class="name">YANA</div>
-      Thanks! 😊💜
-      <br><br>
-      I received your message.
-      <br>
-      Real AI responses will work
-      after we connect an AI API.
-    `;
 
-    chat.appendChild(reply);
+    if(!response.ok){
 
-    chat.scrollTop =
-    chat.scrollHeight;
+      throw new Error(
+        "Server error: " +
+        response.status
+      );
 
-  },500);
+    }
+
+
+    const data =
+    await response.json();
+
+
+    addMessage(
+      data.reply || "Mujhe reply nahi mila 😅",
+      false
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    addMessage(
+      "⚠️ YANA server se connect nahi ho pa raha. Thodi der baad try karo.",
+      false
+    );
+
+  }
+
+
+  send.disabled = false;
+
+  send.textContent = "➤";
 
 });
 
