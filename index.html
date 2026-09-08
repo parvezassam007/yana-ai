@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>YANA AI</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#070d1b;
+  color:#fff;
+}
+
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:260px 1fr 390px;
+}
+
+/* SIDEBAR */
+.sidebar{
+  background:#08101f;
+  border-right:1px solid #202a43;
+  padding:28px 22px;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.logo span{
+  color:#c05cff;
+}
+
+.tag{
+  color:#aeb8d3;
+  margin-top:8px;
+  font-style:italic;
+}
+
+.nav{
+  margin-top:40px;
+}
+
+.nav button{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#cbd3eb;
+  padding:16px;
+  margin:5px 0;
+  border-radius:14px;
+  text-align:left;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.nav button:hover,
+.nav .active{
+  background:linear-gradient(90deg,#30247a,#211b4e);
+  color:white;
+}
+
+.quote{
+  position:absolute;
+  bottom:30px;
+  color:#b7bdea;
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* MAIN */
+.main{
+  padding:35px;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.top h1{
+  font-size:32px;
+}
+
+.purple{
+  color:#bd5cff;
+}
+
+.status{
+  background:#121d32;
+  padding:10px 16px;
+  border-radius:25px;
+}
+
+.online{
+  color:#00e28a;
+}
+
+.subtitle{
+  color:#aeb8d3;
+  margin-top:10px;
+}
+
+/* CHAT */
+.chat{
+  flex:1;
+  overflow-y:auto;
+  padding:20px 5px;
+}
+
+.msg{
+  max-width:650px;
+  background:#121c2e;
+  padding:18px 20px;
+  border-radius:22px;
+  margin:18px 0;
+  line-height:1.6;
+}
+
+.msg.user{
+  margin-left:auto;
+  max-width:300px;
+  background:linear-gradient(135deg,#6338d9,#4930b5);
+}
+
+.name{
+  color:#c05cff;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+/* INPUT */
+.composer{
+  display:flex;
+  gap:10px;
+  padding:12px;
+  background:#101a2d;
+  border:1px solid #263452;
+  border-radius:28px;
+}
+
+.composer input{
+  flex:1;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:white;
+  font-size:16px;
+  padding:12px;
+}
+
+.send{
+  width:54px;
+  height:54px;
+  border:0;
+  border-radius:50%;
+  background:#7445ef;
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* RIGHT PANEL */
+.right{
+  background:#090f1d;
+  border-left:1px solid #202a43;
+  text-align:center;
+  overflow:hidden;
+}
+
+.hero{
+  width:100%;
+  height:70vh;
+  object-fit:cover;
+  object-position:center top;
+}
+
+.right h2{
+  font-size:34px;
+  margin:10px 0 3px;
+}
+
+.right h2 span{
+  color:#bd5cff;
+}
+
+.sub{
+  color:#b8c0da;
+  font-size:18px;
+}
+
+.features{
+  display:flex;
+  justify-content:space-around;
+  padding:20px 5px;
+  color:#cdd5ea;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.signature{
+  color:#df72ff;
+  font-style:italic;
+  font-size:20px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar,
+  .right{
+    display:none;
+  }
+
+  .main{
+    padding:20px;
+  }
+
+  .top h1{
+    font-size:25px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="logo">
+    🤖 YANA <span>AI</span>
+  </div>
+
+  <div class="tag">
+    Always Here For You
+  </div>
+
+  <div class="nav">
+    <button class="active">💬 Chat</button>
+    <button>◷ History</button>
+    <button>ⓘ About</button>
+    <button>⚙ Settings</button>
+  </div>
+
+  <div class="quote">
+    Better<br>
+    Questions<br>
+    Better<br>
+    Answers<br>
+    ♡ ─────
+  </div>
+
+</aside>
+
+
+<!-- MAIN CHAT -->
+<main class="main">
+
+  <div class="top">
+
+    <h1>
+      Hello, <span class="purple">Parbez!</span> 👋
+    </h1>
+
+    <div class="status">
+      <span class="online">●</span>
+      Online
+    </div>
+
+  </div>
+
+  <p class="subtitle">
+    I'm YANA, your personal AI assistant.
+    How can I help you today?
+  </p>
+
+
+  <section class="chat" id="chat">
+
+    <div class="msg">
+
+      <div class="name">
+        YANA
+      </div>
+
+      Hey Parbez! 😊
+      <br><br>
+
+      I'm YANA, your AI assistant.
+      <br>
+
+      Ask me anything! 💜
+
+    </div>
+
+
+    <div class="msg user">
+      Hi Yana 👋
+    </div>
+
+
+    <div class="msg">
+
+      <div class="name">
+        YANA
+      </div>
+
+      Hello Parbez! 😊
+      <br>
+
+      How can I help you today? 💜
+
+    </div>
+
+  </section>
+
+
+  <!-- MESSAGE BOX -->
+  <form class="composer" id="form">
+
+    <input
+      id="input"
+      type="text"
+      autocomplete="off"
+      placeholder="Type your message..."
+    >
+
+    <button class="send" type="submit">
+      ➤
+    </button>
+
+  </form>
+
+</main>
+
+
+<!-- YANA PHOTO -->
+<aside class="right">
+
+  <img
+    src="yana.png"
+    class="hero"
+    alt="YANA AI"
+  >
+
+  <h2>
+    YANA <span>AI</span>
+  </h2>
+
+  <div class="sub">
+    Your Smart AI Friend
+  </div>
+
+  <div class="features">
+
+    <div>
+      ⚡<br>
+      Smart<br>
+      Responses
+    </div>
+
+    <div>
+      ♡<br>
+      Friendly<br>
+      Chat
+    </div>
+
+    <div>
+      🛡<br>
+      Privacy<br>
+      First
+    </div>
+
+  </div>
+
+  <div class="signature">
+    Always with you... ♡
+  </div>
+
+</aside>
+
+</div>
+
+
+<script>
+
+const form =
+document.getElementById("form");
+
+const input =
+document.getElementById("input");
+
+const chat =
+document.getElementById("chat");
+
+
+form.addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  const text =
+  input.value.trim();
+
+  if(!text) return;
+
+
+  /* USER MESSAGE */
+
+  const user =
+  document.createElement("div");
+
+  user.className =
+  "msg user";
+
+  user.textContent =
+  text;
+
+  chat.appendChild(user);
+
+  input.value = "";
+
+  chat.scrollTop =
+  chat.scrollHeight;
+
+
+  /* YANA REPLY */
+
+  setTimeout(function(){
+
+    const reply =
+    document.createElement("div");
+
+    reply.className =
+    "msg";
+
+    reply.innerHTML = `
+      <div class="name">YANA</div>
+      Thanks! 😊💜
+      <br><br>
+      I received your message.
+      <br>
+      Real AI responses will work
+      after we connect an AI API.
+    `;
+
+    chat.appendChild(reply);
+
+    chat.scrollTop =
+    chat.scrollHeight;
+
+  },500);
+
+});
+
+</script>
+
+</body>
+</html>
