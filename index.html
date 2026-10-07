@@ -1,13 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yana Bazar | India's Trusted Online Marketplace</title>
-  </head>
-  <body class="bg-gray-50 text-gray-800 antialiased selection:bg-yana-500 selection:text-white">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#2563eb">
+
+  <title>Parbez AI</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="ai-logo">🤖</div>
+
+      <div>
+        <h1>Parbez AI</h1>
+        <p>Personal AI Assistant</p>
+      </div>
+
+      <div class="status">
+        <span></span>
+        Online
+      </div>
+    </header>
+
+
+    <!-- Chat -->
+    <main id="chatBox" class="chat-box">
+
+      <div class="message ai-message">
+        <div class="avatar">🤖</div>
+
+        <div class="bubble">
+          Hello Parbez! 👋<br>
+          Main tumhara personal AI assistant hoon.
+          Tum mujhse kuch bhi pooch sakte ho.
+        </div>
+      </div>
+
+    </main>
+
+
+    <!-- Input -->
+    <div class="input-area">
+
+      <button id="micBtn" class="icon-btn" title="Voice">
+        🎤
+      </button>
+
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Message Parbez AI..."
+        autocomplete="off"
+      >
+
+      <button id="sendBtn" class="send-btn">
+        ➤
+      </button>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
 </html>
